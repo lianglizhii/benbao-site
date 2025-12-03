@@ -1,8 +1,7 @@
 // src/app/layout.tsx
 import type { Metadata } from 'next'
 import './globals.css'
-import ClientLayout from '@/components/ClientLayout'
-import Script from 'next/script' // 1. 引入 Script 组件
+import Script from 'next/script'
 
 export const metadata: Metadata = {
     title: 'Benbao E-Scooter',
@@ -17,11 +16,13 @@ export default function RootLayout({
     return (
         <html lang="en">
         <body suppressHydrationWarning={true}>
-        <ClientLayout>
-            {children}
-        </ClientLayout>
+        {/* 这里不再使用 <ClientLayout> 包裹。
+                    Keystatic 会直接渲染在这里，从而获得全屏体验。
+                    普通页面会通过下级的 (site)/layout.tsx 重新获得 Layout。
+                */}
+        {children}
 
-        {/* 2. 添加 model-viewer 脚本 */}
+        {/* Script 放在这里是安全的，Keystatic 不会受影响 */}
         <Script
             type="module"
             src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"
