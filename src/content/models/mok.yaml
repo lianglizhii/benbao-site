@@ -1,0 +1,34 @@
+name: MOK
+description: 百变骑行，颜值不凡
+tag: 休闲骑
+category: electric-motorcycle
+subCategory: urban
+images:
+  main: /images/models/mok/images/main.png
+  intro:
+    - /images/models/intro/mok/images/intro/0.png
+colors:
+  - name: 豆绿
+    hex: '#FF0000'
+    image: /images/models/colors/mok/colors/0/image.png
+staticSpecs:
+  dimensions: 1750mm*720mm*1060mm
+  display: LCD黑莓仪表
+  lights: LED透镜大灯
+  ratedLoad: 150KG
+  brakes: 前碟后鼓
+  tires: 3.0–10 真空胎
+  ratedRpm: 550r/min
+configurations:
+  - name: 标准版
+    batteryType: 铅酸电池
+    voltage: 60V
+    capacity: 20Ah
+    chargingTime: 6h
+    range: 55km
+    maxSpeed: ≥55km/h
+    climbingAbility: 30°
+    motor: 1000W
+    controller: 12 管矢量控制器
+    curbWeight: 61.5kg
+    powerConsumption: ≤4.5kw·h/100km
