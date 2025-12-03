@@ -1,12 +1,12 @@
 // src/app/(site)/models/[slug]/ModelDetailClient.tsx
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { ChevronRight, RotateCw, CheckCircle2, Box, Loader2 } from 'lucide-react';
+import { ChevronRight, RotateCw, CheckCircle2 } from 'lucide-react';
 import { CarModel } from '@/types';
 
-// 定义 Props，直接接收数据
+// 定义 Props
 interface ModelDetailClientProps {
     model: CarModel;
 }
@@ -21,28 +21,16 @@ const SpecRow: React.FC<{ label: string; value: string; highlight?: boolean }> =
 
 export default function ModelDetailClient({ model }: ModelDetailClientProps) {
     const [selectedColor, setSelectedColor] = useState(0);
-    const [viewType, setViewType] = useState<'main' | 'side' | '3d'>('main');
+    // 移除 '3d' 状态，只保留 'main' 和 'side'
+    const [viewType, setViewType] = useState<'main' | 'side'>('main');
     const [activeConfigIndex, setActiveConfigIndex] = useState(0);
-    const [isModelLoaded, setIsModelLoaded] = useState(false);
-    const modelViewerRef = useRef<HTMLElement>(null);
-
-    // 3D 模型加载监听
-    useEffect(() => {
-        const viewer = modelViewerRef.current;
-        if (viewType === '3d' && viewer) {
-            const handleLoad = () => setIsModelLoaded(true);
-            viewer.addEventListener('load', handleLoad);
-            return () => viewer.removeEventListener('load', handleLoad);
-        } else {
-            setIsModelLoaded(false);
-        }
-    }, [viewType]);
 
     // 获取当前激活的配置
     const activeConfig = model.configurations[activeConfigIndex] || model.configurations[0] || {};
-    // 获取当前激活的颜色图片（如果有）
+    // 获取当前激活的颜色图片
     const currentColorImage = model.colors[selectedColor]?.image;
-    // 决定显示的图片：优先显示当前颜色的图，否则显示主图/侧视图
+
+    // 决定显示的图片
     const displayImage = viewType === 'side'
         ? model.images.side
         : (viewType === 'main' && currentColorImage ? currentColorImage : model.images.main);
@@ -61,56 +49,31 @@ export default function ModelDetailClient({ model }: ModelDetailClientProps) {
                     {/* 左侧：视觉展示区 */}
                     <div className="md:col-span-8">
                         <div className="relative bg-gray-50 rounded-3xl aspect-[4/3] flex items-center justify-center overflow-hidden mb-6 group">
-                            {viewType === '3d' && model.model3d ? (
-                                <>
-                                    {/* Loading 状态 */}
-                                    <div className={`absolute inset-0 z-10 flex flex-col items-center justify-center bg-gray-100 transition-opacity duration-500 ${isModelLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-                                        <div className="flex items-center space-x-2 text-pink-600 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
-                                            <Loader2 size={18} className="animate-spin" />
-                                            <span className="text-sm font-bold">3D 模型加载中...</span>
-                                        </div>
-                                    </div>
-                                    {/* model-viewer web component */}
-                                    <model-viewer
-                                        ref={modelViewerRef}
-                                        src={model.model3d}
-                                        alt={`3D model of ${model.name}`}
-                                        shadow-intensity="1"
-                                        camera-controls
-                                        auto-rotate
-                                        touch-action="pan-y"
-                                        style={{ width: '100%', height: '100%', opacity: isModelLoaded ? 1 : 0, transition: 'opacity 0.7s ease-in-out' }}
-                                    ></model-viewer>
-                                </>
+                            {/* 只显示图片，不再有 3D 判断逻辑 */}
+                            {displayImage ? (
+                                <img
+                                    src={displayImage}
+                                    alt={model.name}
+                                    className="w-[90%] h-auto object-contain transition-all duration-500 hover:scale-105"
+                                />
                             ) : (
-                                <>
-                                    {/* 这里加个判断，或者 fallback 到 null */}
-                                    {displayImage ? (
-                                        <img
-                                            src={displayImage}
-                                            alt={model.name}
-                                            className="w-[90%] h-auto object-contain transition-all duration-500"
-                                        />
-                                    ) : null}
+                                <div className="text-gray-400">暂无图片</div>
+                            )}
 
-                                    {/* 如果没有侧视图，就不要显示这个切换按钮了 */}
-                                    {model.images.side && (
-                                        <button
-                                            onClick={() => setViewType(prev => prev === 'main' ? 'side' : 'main')}
-                                            className="absolute bottom-6 right-6 bg-white/80 backdrop-blur p-3 rounded-full shadow-lg hover:bg-white text-gray-700 transition-all hover:scale-110"
-                                            title="切换视角"
-                                        >
-                                            <RotateCw size={24} />
-                                        </button>
-                                    )}
-                                </>
+                            {/* 只有当有侧视图时，才显示旋转切换按钮 */}
+                            {model.images.side && (
+                                <button
+                                    onClick={() => setViewType(prev => prev === 'main' ? 'side' : 'main')}
+                                    className="absolute bottom-6 right-6 bg-white/80 backdrop-blur p-3 rounded-full shadow-lg hover:bg-white text-gray-700 transition-all hover:scale-110"
+                                    title="切换视角"
+                                >
+                                    <RotateCw size={24} />
+                                </button>
                             )}
                         </div>
 
                         {/* 视角切换按钮组 */}
                         <div className="flex justify-center space-x-4">
-
-                            {/* 1. 主图按钮：如果有主图才显示 */}
                             {model.images.main && (
                                 <button
                                     className={`w-24 h-16 rounded-xl border-2 cursor-pointer overflow-hidden transition-all ${viewType === 'main' ? 'border-pink-600 ring-2 ring-pink-100' : 'border-gray-200 hover:border-gray-300'}`}
@@ -119,26 +82,12 @@ export default function ModelDetailClient({ model }: ModelDetailClientProps) {
                                     <img src={model.images.main} className="w-full h-full object-cover" alt="Main View" />
                                 </button>
                             )}
-
-                            {/* 2. 侧视图按钮：这里是报错的地方，加个条件判断 */}
                             {model.images.side && (
                                 <button
                                     className={`w-24 h-16 rounded-xl border-2 cursor-pointer overflow-hidden transition-all ${viewType === 'side' ? 'border-pink-600 ring-2 ring-pink-100' : 'border-gray-200 hover:border-gray-300'}`}
                                     onClick={() => setViewType('side')}
                                 >
-                                    {/* 只有当 model.images.side 有值时，img 才会渲染 */}
                                     <img src={model.images.side} className="w-full h-full object-cover" alt="Side View" />
-                                </button>
-                            )}
-
-                            {/* 3. 3D视图按钮 */}
-                            {model.model3d && (
-                                <button
-                                    className={`w-24 h-16 rounded-xl border-2 cursor-pointer overflow-hidden transition-all flex flex-col items-center justify-center bg-gray-50 ${viewType === '3d' ? 'border-pink-600 ring-2 ring-pink-100 text-pink-600' : 'border-gray-200 hover:border-gray-300 text-gray-500'}`}
-                                    onClick={() => setViewType('3d')}
-                                >
-                                    <Box size={24} className="mb-1" />
-                                    <span className="text-[10px] font-bold">3D 视图</span>
                                 </button>
                             )}
                         </div>
@@ -151,7 +100,6 @@ export default function ModelDetailClient({ model }: ModelDetailClientProps) {
                                 {model.tag}
                             </span>
                             <h1 className="text-4xl font-bold text-gray-900 mb-4">{model.name}</h1>
-                            {/* 简介 */}
                             <p className="text-gray-500 leading-relaxed">{model.description}</p>
                         </div>
 
@@ -161,7 +109,7 @@ export default function ModelDetailClient({ model }: ModelDetailClientProps) {
                                 {model.colors.map((color, idx) => (
                                     <button
                                         key={idx}
-                                        onClick={() => { setSelectedColor(idx); if(viewType === '3d') setViewType('main'); }}
+                                        onClick={() => setSelectedColor(idx)}
                                         className={`w-10 h-10 rounded-full border-2 shadow-sm flex items-center justify-center transition-all ${selectedColor === idx ? 'border-pink-600 scale-110' : 'border-gray-200 hover:scale-105'}`}
                                         style={{ backgroundColor: color.hex }}
                                         title={color.name}
