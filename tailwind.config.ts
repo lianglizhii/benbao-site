@@ -31,7 +31,9 @@ const config = {
             }
         },
     },
-    plugins: [],
+    plugins: [
+        require('@tailwindcss/typography'),
+    ],
 }; // 如果这里报错，删掉 satisfies Config 及其前面的空格
 
 export default config;
