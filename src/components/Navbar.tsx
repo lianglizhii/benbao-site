@@ -5,13 +5,18 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X, Globe, ChevronDown, MapPin } from 'lucide-react';
-import { translations, allModels } from '../constants'; // 确保路径正确，可能需要调整为 '@/constants'
+import { translations } from '@/constants'; // 1. 移除了 allModels
 import Logo from './Logo';
-import { MainCategory } from '../types'; // 确保路径正确，可能需要调整为 '@/types'
+import { MainCategory, CarModel } from '@/types'; // 2. 引入 CarModel 类型
 import { useLanguage } from '@/context/LanguageContext';
 
-const Navbar: React.FC = () => {
-    // 1. 使用 Context 获取语言状态
+// 3. 定义 Props
+interface NavbarProps {
+    allModels: CarModel[];
+}
+
+// 4. 接收 props (给默认值 [] 防止报错)
+const Navbar: React.FC<NavbarProps> = ({ allModels = [] }) => {
     const { lang, toggleLang } = useLanguage();
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,7 +28,6 @@ const Navbar: React.FC = () => {
     const [regionOpen, setRegionOpen] = useState(false);
 
     const t = translations[lang];
-    // 2. 替换 useLocation
     const pathname = usePathname();
 
     useEffect(() => {
@@ -33,7 +37,6 @@ const Navbar: React.FC = () => {
     }, []);
 
     // Close mobile menu on route change
-    // 注意：pathname 变化时关闭菜单
     useEffect(() => {
         setIsMenuOpen(false);
         setMobileExpandedItem(null);
@@ -47,7 +50,6 @@ const Navbar: React.FC = () => {
         setRegionOpen(false);
     };
 
-    // NAV STRUCTURE
     const navStructure = [
         {
             id: 'models',
@@ -115,6 +117,7 @@ const Navbar: React.FC = () => {
 
     // Helper to filter models for mega menu preview
     const getPreviewModels = (cat: MainCategory) => {
+        // 5. 使用 props 传入的 allModels
         return allModels.filter(m => m.category === cat).slice(0, 5);
     };
 
@@ -132,7 +135,6 @@ const Navbar: React.FC = () => {
                 onMouseLeave={() => { setIsNavHovered(false); setHoveredNav(null); }}
             >
                 <div className="container mx-auto px-6 flex justify-between items-center relative z-50">
-                    {/* Link 使用 href */}
                     <Link href="/" className="flex items-center" onClick={handleNavClick}>
                         <Logo className="h-8 md:h-10 w-auto" theme={isDarkText ? 'dark' : 'light'} />
                     </Link>
@@ -311,69 +313,69 @@ const Navbar: React.FC = () => {
                         return null;
                     })}
                 </div>
-            </nav>
 
-            {/* Mobile Menu */}
-            <div className={`fixed inset-0 z-40 bg-white transition-transform duration-300 ease-in-out transform ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'} md:hidden pt-24 px-6 overflow-y-auto`}>
-                <div className="flex flex-col space-y-6 pb-20">
-                    <div className="flex gap-4 border-b border-gray-100 pb-4">
-                        <button className="bg-pink-50 text-pink-600 px-4 py-2 rounded-lg font-bold text-sm">中国大陆</button>
-                        <a href="https://google.com" className="text-gray-500 px-4 py-2 rounded-lg font-medium text-sm">Global</a>
-                    </div>
-
-                    {navStructure.map((item) => (
-                        <div key={item.id} className="border-b border-gray-100 pb-4">
-                            {item.type === 'link' ? (
-                                <Link href={item.path} onClick={handleNavClick} className="text-2xl font-bold text-gray-900 block">{item.title}</Link>
-                            ) : (
-                                <div className="flex flex-col">
-                                    <button
-                                        onClick={() => setMobileExpandedItem(mobileExpandedItem === item.id ? null : item.id)}
-                                        className="flex justify-between items-center text-2xl font-bold text-gray-900 w-full"
-                                    >
-                                        {item.title}
-                                    </button>
-
-                                    {mobileExpandedItem === item.id && (
-                                        <div className="mt-4 pl-4 space-y-3 animate-fade-in-up">
-                                            {item.id === 'models' && (
-                                                <div className="space-y-4">
-                                                    <Link href="/models" onClick={handleNavClick} className="text-pink-600 font-bold block mb-2">查看全系车型</Link>
-                                                    {categories.map(cat => (
-                                                        <div key={cat.id}>
-                                                            <p className="text-xs font-bold text-gray-400 uppercase mb-1">{cat.label}</p>
-                                                            {getPreviewModels(cat.id).slice(0,3).map(model => (
-                                                                <Link key={model.id} href={`/models/${model.id}`} onClick={handleNavClick} className="block py-1 text-gray-700">{model.name}</Link>
-                                                            ))}
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            )}
-
-                                            {item.type === 'dropdown' && item.items?.map((subItem, idx) => (
-                                                <Link key={idx} href={subItem.path} onClick={handleNavClick} className="block text-gray-600 py-1 text-lg">
-                                                    {subItem.name}
-                                                </Link>
-                                            ))}
-
-                                            {item.type === 'complex-dropdown' && item.groups?.map((group, gIdx) => (
-                                                <div key={gIdx} className="mb-4">
-                                                    <p className="text-xs font-bold text-gray-400 uppercase mb-2">{group.title}</p>
-                                                    {group.items.map((sub, sIdx) => (
-                                                        <Link key={sIdx} href={sub.path} onClick={handleNavClick} className="block text-gray-600 py-1 text-lg">
-                                                            {sub.name}
-                                                        </Link>
-                                                    ))}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            )}
+                {/* Mobile Menu */}
+                <div className={`fixed inset-0 z-40 bg-white transition-transform duration-300 ease-in-out transform ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'} md:hidden pt-24 px-6 overflow-y-auto`}>
+                    <div className="flex flex-col space-y-6 pb-20">
+                        <div className="flex gap-4 border-b border-gray-100 pb-4">
+                            <button className="bg-pink-50 text-pink-600 px-4 py-2 rounded-lg font-bold text-sm">中国大陆</button>
+                            <a href="https://google.com" className="text-gray-500 px-4 py-2 rounded-lg font-medium text-sm">Global</a>
                         </div>
-                    ))}
+
+                        {navStructure.map((item) => (
+                            <div key={item.id} className="border-b border-gray-100 pb-4">
+                                {item.type === 'link' ? (
+                                    <Link href={item.path} onClick={handleNavClick} className="text-2xl font-bold text-gray-900 block">{item.title}</Link>
+                                ) : (
+                                    <div className="flex flex-col">
+                                        <button
+                                            onClick={() => setMobileExpandedItem(mobileExpandedItem === item.id ? null : item.id)}
+                                            className="flex justify-between items-center text-2xl font-bold text-gray-900 w-full"
+                                        >
+                                            {item.title}
+                                        </button>
+
+                                        {mobileExpandedItem === item.id && (
+                                            <div className="mt-4 pl-4 space-y-3 animate-fade-in-up">
+                                                {item.id === 'models' && (
+                                                    <div className="space-y-4">
+                                                        <Link href="/models" onClick={handleNavClick} className="text-pink-600 font-bold block mb-2">查看全系车型</Link>
+                                                        {categories.map(cat => (
+                                                            <div key={cat.id}>
+                                                                <p className="text-xs font-bold text-gray-400 uppercase mb-1">{cat.label}</p>
+                                                                {getPreviewModels(cat.id).slice(0,3).map(model => (
+                                                                    <Link key={model.id} href={`/models/${model.id}`} onClick={handleNavClick} className="block py-1 text-gray-700">{model.name}</Link>
+                                                                ))}
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+
+                                                {item.type === 'dropdown' && item.items?.map((subItem, idx) => (
+                                                    <Link key={idx} href={subItem.path} onClick={handleNavClick} className="block text-gray-600 py-1 text-lg">
+                                                        {subItem.name}
+                                                    </Link>
+                                                ))}
+
+                                                {item.type === 'complex-dropdown' && item.groups?.map((group, gIdx) => (
+                                                    <div key={gIdx} className="mb-4">
+                                                        <p className="text-xs font-bold text-gray-400 uppercase mb-2">{group.title}</p>
+                                                        {group.items.map((sub, sIdx) => (
+                                                            <Link key={sIdx} href={sub.path} onClick={handleNavClick} className="block text-gray-600 py-1 text-lg">
+                                                                {sub.name}
+                                                            </Link>
+                                                        ))}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            </div>
+            </nav>
         </>
     );
 };

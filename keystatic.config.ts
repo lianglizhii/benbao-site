@@ -5,6 +5,38 @@ export default config({
     storage: {
         kind: 'local',
     },
+    singletons: {
+        faqAndPolicy: {
+            label: '服务与政策管理',
+            path: 'src/content/singletons/service-policy', // 存储位置
+            schema: {
+                // --- FAQ 常见问题 (Array of Objects) ---
+                faqItems: fields.array(
+                    fields.object({
+                        q: fields.text({ label: '问题 (Question)' }),
+                        a: fields.text({ label: '回答 (Answer)', multiline: true }),
+                    }),
+                    {
+                        label: '常见问题列表 (FAQ)',
+                        itemLabel: props => props.fields.q.value || '新问题'
+                    }
+                ),
+
+                // --- 政策条款 (Array of Objects) ---
+                policyItems: fields.array(
+                    fields.object({
+                        part: fields.text({ label: '部件名称 (Part)' }),
+                        term: fields.text({ label: '保修期限 (Term)' }),
+                        desc: fields.text({ label: '保修说明 (Description)' }),
+                    }),
+                    {
+                        label: '保修政策列表 (Policy)',
+                        itemLabel: props => props.fields.part.value || '新部件'
+                    }
+                ),
+            },
+        },
+    },
     collections: {
         //新闻管理
         news: collection({
@@ -50,9 +82,13 @@ export default config({
             label: '车型管理',
             slugField: 'name',
             path: 'src/content/models/*',
-            format: { contentField: 'description' }, // description 用作内容字段，虽然只是纯文本
             schema: {
                 name: fields.slug({ name: { label: '车型名称 (Name)' } }),
+                description: fields.text({
+                    label: '简短描述 (Description)',
+                    multiline: true, // 允许换行
+                    validation: { length: { min: 1 } }
+                }),
                 tag: fields.text({ label: '标签 (Tag)', description: '例如: 长续航, 赛道级' }),
                 category: fields.select({
                     label: '主分类',
@@ -142,6 +178,29 @@ export default config({
                     }),
                     { label: '动力版本配置', itemLabel: props => props.fields.name.value }
                 ),
+            },
+        }),
+
+        // 在 models 集合后面添加
+        honors: collection({
+            label: '荣誉认证',
+            slugField: 'title', // 使用标题作为文件名
+            path: 'src/content/honors/*',
+            format: { contentField: 'content' }, // 这里的 content 其实用不到，为了兼容性保留
+            schema: {
+                title: fields.slug({ name: { label: '荣誉名称 (Title)' } }),
+                year: fields.text({ label: '获奖年份 (Year)', validation: { length: { min: 4, max: 4 } } }),
+                image: fields.image({
+                    label: '证书图片',
+                    directory: 'public/images/honors',
+                    publicPath: '/images/honors/',
+                    validation: { isRequired: true }
+                }),
+                // 必须有一个 content 字段，即使我们不怎么用它，用来存点备注也好
+                content: fields.document({
+                    label: '备注说明 (可选)',
+                    formatting: true
+                }),
             },
         }),
     },

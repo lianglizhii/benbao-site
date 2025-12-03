@@ -27,16 +27,6 @@ export const historyData: HistoryEvent[] = [
     { year: "2024", event: "布局中东", desc: "全球版图再扩张", image: "https://images.unsplash.com/photo-1512453979798-5ea904ac6686?q=80&w=2670&auto=format&fit=crop" }
 ];
 
-export const honorsData: Honor[] = [
-    { title: "全国体育文化宣传推广活动特别爱心企业", year: "2025", image: "https://images.unsplash.com/photo-1579548122080-c35fd6820ecb?q=80&w=1470&auto=format&fit=crop" },
-    { title: "浙江省优秀工业产品证书", year: "2021", image: "https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?q=80&w=1470&auto=format&fit=crop" },
-    { title: "获评国家一级目录企业", year: "2019", image: "https://images.unsplash.com/photo-1635350644136-1e07b46d091e?q=80&w=1467&auto=format&fit=crop" },
-    { title: "获国家3C电摩双认证", year: "2018", image: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=1512&auto=format&fit=crop" },
-    { title: "荣获台州名牌产品", year: "2017", image: "https://images.unsplash.com/photo-1628149206236-40742d453b34?q=80&w=1470&auto=format&fit=crop" },
-    { title: "台州市高新技术企业", year: "2015", image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1470&auto=format&fit=crop" },
-    { title: "重点推广中国著名品牌", year: "2006", image: "https://images.unsplash.com/photo-1563906267088-b029e7101114?q=80&w=1470&auto=format&fit=crop" },
-    { title: "全国电动车十佳品牌", year: "2005", image: "https://images.unsplash.com/photo-1533227297402-46edfed15826?q=80&w=1470&auto=format&fit=crop" }
-];
 
 export const partnersData: Partner[] = [
     { name: "Bosch", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Bosch-Logo.svg/2560px-Bosch-Logo.svg.png" },
