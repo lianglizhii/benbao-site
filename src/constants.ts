@@ -28,15 +28,6 @@ export const historyData: HistoryEvent[] = [
 ];
 
 
-export const partnersData: Partner[] = [
-    { name: "Bosch", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Bosch-Logo.svg/2560px-Bosch-Logo.svg.png" },
-    { name: "LG Chem", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/LG_Chem_logo.svg/2560px-LG_Chem_logo.svg.png" },
-    { name: "Siemens", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Siemens-logo.svg/2560px-Siemens-logo.svg.png" },
-    { name: "Panasonic", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Panasonic_logo_%28Blue%29.svg/2560px-Panasonic_logo_%28Blue%29.svg.png" },
-    { name: "CATL", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/CATL_logo.svg/1200px-CATL_logo.svg.png" },
-    { name: "Michelin", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Michelin_Logo.svg/1024px-Michelin_Logo.svg.png" }
-];
-
 export const valuesData: ValueItem[] = [
     { title: "品质为本", items: ["每台车都是名片", "不做行业平均水平"] },
     { title: "设计为魂", items: ["好看是第一竞争力", "产品视觉统一"] },

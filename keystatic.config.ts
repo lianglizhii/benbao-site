@@ -6,6 +6,28 @@ export default config({
         kind: 'local',
     },
     singletons: {
+        partners: {
+            label: '合作伙伴管理',
+            path: 'src/content/singletons/partners', // 存储位置
+            schema: {
+                partnerList: fields.array(
+                    fields.object({
+                        name: fields.text({ label: '公司名称' }),
+                        logo: fields.image({
+                            label: 'Logo 图片',
+                            directory: 'public/images/partners',
+                            publicPath: '/images/partners/',
+                            description: '请上传 PNG/SVG 格式的透明背景 Logo',
+                            validation: { isRequired: true }
+                        }),
+                    }),
+                    {
+                        label: '合作伙伴列表',
+                        itemLabel: props => props.fields.name.value || '新伙伴'
+                    }
+                ),
+            },
+        },
         faqAndPolicy: {
             label: '服务与政策管理',
             path: 'src/content/singletons/service-policy', // 存储位置
@@ -34,8 +56,10 @@ export default config({
                         itemLabel: props => props.fields.part.value || '新部件'
                     }
                 ),
+
             },
         },
+
     },
     collections: {
         //新闻管理
