@@ -3,41 +3,40 @@
 
 import React, { useState, useEffect } from 'react';
 import { HelpCircle, FileText } from 'lucide-react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Pagination from '@/components/Pagination';
 import { useLanguage } from '@/context/LanguageContext';
+// 👇 引入动画组件
+import FadeIn from '@/components/FadeIn';
 
-// 定义接口，接收来自 Server Component 的数据
 export interface ServiceDataProps {
     faqData: { q: string, a: string }[];
     policyData: { part: string, term: string, desc: string }[];
 }
 
-// 接收 props
 export default function ServiceClient({ faqData, policyData }: ServiceDataProps) {
     const { lang } = useLanguage();
+    const searchParams = useSearchParams();
+    const router = useRouter();
 
     const [activeTab, setActiveTab] = useState<'faq' | 'policy'>('faq');
     const [currentFAQPage, setCurrentFAQPage] = useState(1);
     const faqItemsPerPage = 5;
 
-    // Next.js: 手动监听 Hash 变化
     useEffect(() => {
-        const checkHash = () => {
-            if (typeof window !== 'undefined') {
-                if (window.location.hash === '#policy') {
-                    setActiveTab('policy');
-                } else if (window.location.hash === '#faq') {
-                    setActiveTab('faq');
-                }
-            }
-        };
-        checkHash();
+        const tab = searchParams.get('tab');
+        if (tab === 'policy') {
+            setActiveTab('policy');
+        } else {
+            setActiveTab('faq');
+        }
+    }, [searchParams]);
 
-        window.addEventListener('hashchange', checkHash);
-        return () => window.removeEventListener('hashchange', checkHash);
-    }, []);
+    const handleTabChange = (tab: 'faq' | 'policy') => {
+        setActiveTab(tab);
+        router.push(`/service?tab=${tab}`, { scroll: false });
+    };
 
-    // 数据源现在是 props 传来的 faqData
     const totalFAQPages = Math.ceil(faqData.length / faqItemsPerPage);
     const currentFAQ = faqData.slice(
         (currentFAQPage - 1) * faqItemsPerPage,
@@ -46,47 +45,56 @@ export default function ServiceClient({ faqData, policyData }: ServiceDataProps)
 
     return (
         <div className="animate-fade-in-up">
+            {/* Hero Section */}
             <div className="relative h-[350px] flex items-center justify-center bg-gray-900 overflow-hidden">
                 <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=2669&auto=format&fit=crop"
                      className="absolute inset-0 w-full h-full object-cover opacity-40" alt="Service"/>
                 <div className="relative z-10 text-center text-white p-6">
-                    <h1 className="text-4xl font-bold mb-4">服务支持</h1>
-                    <p className="text-lg opacity-90">全程贴心守护，让您的出行无后顾之忧</p>
+                    <FadeIn direction="up">
+                        <h1 className="text-4xl font-bold mb-4">服务支持</h1>
+                        <p className="text-lg opacity-90">全程贴心守护，让您的出行无后顾之忧</p>
+                    </FadeIn>
                 </div>
             </div>
 
             <div className="container mx-auto px-6 py-12">
-                <div className="flex justify-center mb-12">
+                {/* Tab Buttons */}
+                <FadeIn delay={100} className="flex justify-center mb-12">
                     <div className="bg-gray-100 p-1 rounded-full inline-flex">
-                        <button onClick={() => setActiveTab('faq')}
+                        <button onClick={() => handleTabChange('faq')}
                                 className={`px-8 py-3 rounded-full text-sm font-bold transition-all ${activeTab === 'faq' ? 'bg-white text-pink-600 shadow-sm' : 'text-gray-500 hover:text-gray-800'}`}>常见问题
                         </button>
-                        <button onClick={() => setActiveTab('policy')}
+                        <button onClick={() => handleTabChange('policy')}
                                 className={`px-8 py-3 rounded-full text-sm font-bold transition-all ${activeTab === 'policy' ? 'bg-white text-pink-600 shadow-sm' : 'text-gray-500 hover:text-gray-800'}`}>服务政策
                         </button>
                     </div>
-                </div>
+                </FadeIn>
 
+                {/* FAQ Content */}
                 {activeTab === 'faq' && (
-                    <div id="faq" className="max-w-3xl mx-auto animate-fade-in-up">
+                    <div className="max-w-3xl mx-auto">
                         <div className="space-y-4">
-                            {/* 👇 使用 props 传来的数据 */}
                             {currentFAQ.map((item, idx) => (
-                                <div key={idx}
-                                     className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
-                                    <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-start"><HelpCircle
-                                        className="text-pink-500 mr-2 mt-1 flex-shrink-0" size={20}/>{item.q}</h3>
-                                    <p className="text-gray-600 text-sm leading-relaxed pl-7">{item.a}</p>
-                                </div>
+                                // 每一个 FAQ 问题依次滑入
+                                <FadeIn key={idx} delay={idx * 100} direction="up">
+                                    <div className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                                        <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-start"><HelpCircle
+                                            className="text-pink-500 mr-2 mt-1 flex-shrink-0" size={20}/>{item.q}</h3>
+                                        <p className="text-gray-600 text-sm leading-relaxed pl-7">{item.a}</p>
+                                    </div>
+                                </FadeIn>
                             ))}
                         </div>
-                        <Pagination currentPage={currentFAQPage} totalPages={totalFAQPages}
-                                    onPageChange={setCurrentFAQPage}/>
+                        <FadeIn delay={600}>
+                            <Pagination currentPage={currentFAQPage} totalPages={totalFAQPages}
+                                        onPageChange={setCurrentFAQPage}/>
+                        </FadeIn>
                     </div>
                 )}
 
+                {/* Policy Content */}
                 {activeTab === 'policy' && (
-                    <div id="policy" className="max-w-4xl mx-auto animate-fade-in-up">
+                    <FadeIn delay={200} className="max-w-4xl mx-auto">
                         <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
                             <div className="p-8 border-b border-gray-100 bg-gray-50">
                                 <h3 className="text-2xl font-bold text-gray-900 flex items-center"><FileText
@@ -103,7 +111,6 @@ export default function ServiceClient({ faqData, policyData }: ServiceDataProps)
                                     </tr>
                                     </thead>
                                     <tbody className="text-gray-600 text-sm">
-                                    {/* 👇 使用 props 传来的数据 */}
                                     {policyData.map((row, idx) => (
                                         <tr key={idx}
                                             className="hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-0">
@@ -121,7 +128,7 @@ export default function ServiceClient({ faqData, policyData }: ServiceDataProps)
                                 电池保修期内容量衰减至60%以下可申请免费更换。<br/>4. 最终解释权归浙江奔宝车业有限公司所有。
                             </div>
                         </div>
-                    </div>
+                    </FadeIn>
                 )}
             </div>
         </div>

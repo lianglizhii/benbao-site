@@ -1,3 +1,13 @@
 partnerList:
   - name: 天能集团
     logo: /images/partners/partnerList/0/logo.jpg
+  - name: 超威集团
+    logo: /images/partners/partnerList/1/logo.png
+  - name: 金宇星机电
+    logo: /images/partners/partnerList/2/logo.png
+  - name: 正新轮胎
+    logo: /images/partners/partnerList/3/logo.png
+  - name: 朝阳轮胎
+    logo: /images/partners/partnerList/4/logo.png
+  - name: 聚源
+    logo: /images/partners/partnerList/5/logo.png

@@ -70,9 +70,10 @@ const Navbar: React.FC<NavbarProps> = ({ allModels = [] }) => {
             type: 'dropdown',
             image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=2669&auto=format&fit=crop",
             items: [
-                { name: t.nav.items.contactSupport, path: '/contact#info' },
-                { name: t.nav.items.afterSales, path: '/service#policy' },
-                { name: t.nav.items.faq, path: '/service#faq' }
+                { name: t.nav.items.contactSupport, path: '/contact#contact' },
+                { name: t.nav.items.social, path: '/contact#social' },
+                { name: t.nav.items.afterSales, path: '/service?tab=policy' },
+                { name: t.nav.items.faq, path: '/service?tab=faq' }
             ]
         },
         {
