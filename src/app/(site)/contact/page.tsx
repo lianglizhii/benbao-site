@@ -109,7 +109,7 @@ export default function ContactPage() {
                         {/* Map Placeholder */}
                         <FadeIn direction="up" delay={500}>
                             <div className="bg-gray-200 rounded-2xl overflow-hidden relative h-64 mt-8 shadow-inner hover:shadow-lg transition-shadow duration-500">
-                                <img src="https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?q=80&w=2662&auto=format&fit=crop" className="w-full h-full object-cover grayscale opacity-50 hover:grayscale-0 transition-all duration-700" alt="Map" />
+                                <img src="/else/adress.webp" className="w-full h-full object-cover grayscale opacity-50 hover:grayscale-0 transition-all duration-700" alt="Map" />
                                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                                     <div className="bg-white p-4 rounded-lg shadow-lg text-center"><MapPin className="mx-auto text-pink-600 mb-2" size={32} /><p className="font-bold">浙江奔宝车业有限公司</p></div>
                                 </div>

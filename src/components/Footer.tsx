@@ -5,10 +5,9 @@ import React from 'react';
 import Link from 'next/link';
 import Logo from './Logo';
 import { MessageSquare, Phone } from 'lucide-react';
-import { useLanguage } from '@/context/LanguageContext'; // 引入 Context
+import { useLanguage } from '@/context/LanguageContext';
 
 const Footer: React.FC = () => {
-    // 1. 获取语言状态
     const { lang } = useLanguage();
 
     const socialMediaData = [
@@ -23,10 +22,9 @@ const Footer: React.FC = () => {
             <div className="container mx-auto px-6">
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 lg:gap-12 mb-16">
 
-                    {/* Brand Column: Identity & Contact */}
+                    {/* Brand Column */}
                     <div className="col-span-2 md:col-span-4 lg:col-span-2 flex flex-col items-start space-y-8 pr-0 lg:pr-8">
                         <div>
-                            {/* Link to 改为 href */}
                             <Link href="/" className="flex items-center gap-2 mb-4">
                                 <Logo className="h-8 w-auto" theme='dark' />
                             </Link>
@@ -85,9 +83,17 @@ const Footer: React.FC = () => {
                     <div className="col-span-1">
                         <h4 className="font-bold text-gray-900 mb-6">{lang === 'zh' ? '服务支持' : 'Service'}</h4>
                         <ul className="space-y-4 text-sm text-gray-500">
-                            <li><Link href="/contact#info" className="hover:text-pink-600 transition-colors">{lang === 'zh' ? '联系客服' : 'Contact Support'}</Link></li>
-                            <li><Link href="/service#policy" className="hover:text-pink-600 transition-colors">{lang === 'zh' ? '售后服务' : 'After Sales'}</Link></li>
-                            <li><Link href="/service#faq" className="hover:text-pink-600 transition-colors">{lang === 'zh' ? '常见问题' : 'FAQ'}</Link></li>
+                            {/* 👇 1. 联系客服 */}
+                            <li><Link href="/contact#contact" className="hover:text-pink-600 transition-colors">{lang === 'zh' ? '联系我们' : 'Contact Us'}</Link></li>
+
+                            {/* 👇 2. 新增：社媒账号 -> /contact#social */}
+                            <li><Link href="/contact#social" className="hover:text-pink-600 transition-colors">{lang === 'zh' ? '社媒账号' : 'Social Media'}</Link></li>
+
+                            {/* 👇 3. 售后政策 */}
+                            <li><Link href="/service?tab=policy" className="hover:text-pink-600 transition-colors">{lang === 'zh' ? '售后政策' : 'After Sales'}</Link></li>
+
+                            {/* 👇 4. 常见问题 */}
+                            <li><Link href="/service?tab=faq" className="hover:text-pink-600 transition-colors">{lang === 'zh' ? '常见问题' : 'FAQ'}</Link></li>
                         </ul>
                     </div>
 
