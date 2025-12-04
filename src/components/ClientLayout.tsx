@@ -10,26 +10,7 @@ import { CarModel } from '@/types'; // 引入类型
 
 function LayoutContent({ children, allModels }: { children: React.ReactNode; allModels: CarModel[] }) {
     const pathname = usePathname();
-    const isStudio = pathname?.startsWith('/studio') || pathname?.startsWith('/keystatic'); // 确保后台也不显示
 
-    useEffect(() => {
-        if (isStudio) return;
-        const hash = typeof window !== 'undefined' ? window.location.hash : '';
-        if (hash) {
-            const element = document.getElementById(hash.substring(1));
-            if (element) {
-                setTimeout(() => {
-                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100);
-            }
-        } else {
-            window.scrollTo(0, 0);
-        }
-    }, [pathname, isStudio]);
-
-    if (isStudio) {
-        return <>{children}</>;
-    }
 
     return (
         <div className="font-sans text-gray-800 antialiased overflow-x-hidden min-h-screen flex flex-col">

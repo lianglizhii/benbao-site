@@ -1,13 +1,13 @@
-// src/app/(site)/models/[slug]/page.tsx
 import { createReader } from '@keystatic/core/reader';
 import { notFound } from 'next/navigation';
-import Config from '../../../../../keystatic.config'; // 请确保路径层级正确
+// 👇 路径回退5层到根目录，请根据实际情况调整 (如果报错找不到模块，尝试减少一个 ../)
+import Config from '../../../../../keystatic.config';
 import ModelDetailClient from './ModelDetailClient';
 import { CarModel, MainCategory, SubCategory } from '@/types';
 
 const reader = createReader(process.cwd(), Config);
 
-// 1. 生成静态参数 (SSG)，这能让页面构建为静态 HTML
+// 1. 生成静态参数 (SSG)
 export async function generateStaticParams() {
     const slugs = await reader.collections.models.list();
     return slugs.map((slug) => ({ slug }));
@@ -25,19 +25,20 @@ export default async function ModelDetailPage({ params }: { params: Promise<{ sl
         notFound();
     }
 
-    // 3. 数据转换：Keystatic 数据 -> CarModel 类型
-    // 我们需要把可能为 null/undefined 的字段填充好，避免前端报错
+    // 3. 数据转换
     const model: CarModel = {
         id: slug,
         name: modelData.name,
         tag: modelData.tag,
-        description: modelData.description || '', // 现在这里是纯文本了
+        description: modelData.description || '',
         category: modelData.category as MainCategory,
         subCategory: modelData.subCategory === 'none' ? null : (modelData.subCategory as SubCategory),
         images: {
             main: modelData.images.main || '',
             side: modelData.images.side || '',
-            intro: modelData.images.intro || [],
+            // 👇 关键修复：保留 intro，并解决类型报错
+            // [... ] 展开只读数组 -> .filter 去除空值 -> 得到纯字符串数组
+            intro: ([...(modelData.images.intro || [])]).filter((img): img is string => typeof img === 'string'),
         },
         colors: modelData.colors.map(c => ({
             name: c.name,
@@ -68,9 +69,8 @@ export default async function ModelDetailPage({ params }: { params: Promise<{ sl
             ratedRpm: modelData.staticSpecs.ratedRpm || '',
             otherFeatures: modelData.staticSpecs.otherFeatures || '',
         },
-        model3d: modelData.model3d || undefined,
+
     };
 
-    // 4. 渲染客户端组件
     return <ModelDetailClient model={model} />;
 }

@@ -28,7 +28,7 @@ export default async function ModelsPage() {
             images: {
                 main: entry.images.main || '',
                 side: entry.images.side || '',
-                intro: entry.images.intro || [],
+                intro: ([...(entry.images.intro || [])]).filter((img): img is string => typeof img === 'string'),
             },
             description: descriptionText,
             // 处理颜色图片可能为空的情况
@@ -63,7 +63,6 @@ export default async function ModelsPage() {
                 ratedRpm: entry.staticSpecs.ratedRpm || '',
                 otherFeatures: entry.staticSpecs.otherFeatures || '',
             },
-            model3d: entry.model3d || undefined,
         };
     });
 

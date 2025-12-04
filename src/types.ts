@@ -29,7 +29,7 @@ export interface ValueItem {
 }
 
 export interface NewsItem {
-    id: number;
+    id: string | number;
     title: string;
     category: string;
     date: string;
@@ -95,7 +95,7 @@ export interface CarModel {
     colors: Array<{name: string, hex: string, image?: string}>;
     configurations: ModelConfiguration[];
     staticSpecs: ModelStaticSpecs;
-    model3d?: string; // URL to .glb file
+    //model3d?: string; // URL to .glb file
 }
 
 export interface SlideData {

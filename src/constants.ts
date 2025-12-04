@@ -1,5 +1,5 @@
 
-import { CarModel, FAQItem, HistoryEvent, Honor, NewsItem, PolicyItem, ValueItem, Translation, Partner, MapLocation } from './types.ts';
+import { CarModel, FAQItem, HistoryEvent, Honor, NewsItem, PolicyItem, ValueItem, Translation, Partner, MapLocation } from './types';
 
 export const globalLocations: MapLocation[] = [
     { name: "中国 (China HQ)", top: "38%", left: "78%" }, // Base location
@@ -186,182 +186,6 @@ const newNationalStandardSpecs = {
     otherFeatures: "配备脚踏板, 超速报警"
 };
 
-// Flattened Model Data
-export const allModels: CarModel[] = [
-    // ... models kept as is
-    { 
-        id: "x9-gt",
-        name: "奔宝 X9 GT", 
-        tag: "赛道级",
-        category: 'electric-motorcycle',
-        subCategory: 'powerful',
-        images: {
-            main: "https://images.unsplash.com/photo-1558980394-4c7c9299fe96?q=80&w=2670&auto=format&fit=crop",
-            side: "https://images.unsplash.com/photo-1558981285-6f0c94958bb6?q=80&w=2670&auto=format&fit=crop",
-            intro: ["https://images.unsplash.com/photo-1591635593878-18d53d2629b0?q=80&w=2574&auto=format&fit=crop"]
-        },
-        description: "专为速度而生，搭载1200W极速电机，体验风驰电掣的快感。",
-        colors: [{name: "黑", hex: "#000"}, {name: "粉", hex: "#D6336C"}, {name: "白", hex: "#FFF"}],
-        configurations: mockConfigurations,
-        staticSpecs: mockStaticSpecs,
-        model3d: "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Buggy/glTF-Binary/Buggy.glb" // Using a generic vehicle sample for demo purposes
-    },
-    { 
-        id: "t7-power",
-        name: "奔宝 T7 Power", 
-        tag: "长续航",
-        category: 'electric-motorcycle',
-        subCategory: 'powerful',
-        images: {
-            main: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?q=80&w=2670&auto=format&fit=crop",
-            side: "https://images.unsplash.com/photo-1558981852-426c6c22a060?q=80&w=2670&auto=format&fit=crop",
-            intro: []
-        },
-        description: "超长续航里程，告别里程焦虑，城市通勤无压力。",
-        colors: [{name: "深灰", hex: "#333"}, {name: "蓝", hex: "#0055FF"}],
-        configurations: mockConfigurations,
-        staticSpecs: mockStaticSpecs
-    },
-    { 
-        id: "s-pro",
-        name: "奔宝 S-Pro", 
-        tag: "高性能",
-        category: 'electric-motorcycle',
-        subCategory: 'powerful',
-        images: {
-            main: "https://images.unsplash.com/photo-1609630875171-b1321377ee65?q=80&w=2670&auto=format&fit=crop",
-            side: "https://images.unsplash.com/photo-1609630875171-b1321377ee65?q=80&w=2670&auto=format&fit=crop",
-            intro: []
-        },
-        description: "性能与舒适的完美平衡，定义高端出行标准。",
-        colors: [{name: "白", hex: "#FFF"}, {name: "红", hex: "#FF0000"}],
-        configurations: mockConfigurations,
-        staticSpecs: mockStaticSpecs
-    },
-    { 
-        id: "classic-v3",
-        name: "奔宝 Classic V3", 
-        tag: "经典复古",
-        category: 'electric-motorcycle',
-        subCategory: 'quality',
-        images: {
-            main: "https://images.unsplash.com/photo-1591635593878-18d53d2629b0?q=80&w=2574&auto=format&fit=crop",
-            side: "https://images.unsplash.com/photo-1591635593878-18d53d2629b0?q=80&w=2574&auto=format&fit=crop",
-            intro: []
-        },
-        description: "经典龟王造型，永不过时的设计语言。",
-        colors: [{name: "米黄", hex: "#F5F5DC"}, {name: "橄榄绿", hex: "#556B2F"}],
-        configurations: mockConfigurations,
-        staticSpecs: mockStaticSpecs
-    },
-    { 
-        id: "lady-e",
-        name: "奔宝 Lady E", 
-        tag: "优雅设计",
-        category: 'electric-motorcycle',
-        subCategory: 'quality',
-        images: {
-            main: "https://images.unsplash.com/photo-1626543789968-3c2242337d45?q=80&w=2670&auto=format&fit=crop",
-            side: "https://images.unsplash.com/photo-1626543789968-3c2242337d45?q=80&w=2670&auto=format&fit=crop",
-            intro: []
-        },
-        description: "专为女性设计，轻盈车身，优雅配色。",
-        colors: [{name: "粉", hex: "#FFC0CB"}, {name: "白", hex: "#FFF"}],
-        configurations: mockConfigurations,
-        staticSpecs: mockStaticSpecs
-    },
-    { 
-        id: "m6",
-        name: "奔宝 M6", 
-        tag: "通勤首选",
-        category: 'electric-motorcycle',
-        subCategory: 'urban',
-        images: {
-            main: "https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?q=80&w=2552&auto=format&fit=crop",
-            side: "https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?q=80&w=2552&auto=format&fit=crop",
-            intro: []
-        },
-        description: "实用主义者的选择，大空间，舒适骑行。",
-        colors: [{name: "白", hex: "#FFF"}, {name: "深灰", hex: "#333"}],
-        configurations: mockConfigurations,
-        staticSpecs: mockStaticSpecs
-    },
-    { 
-        id: "city-go",
-        name: "奔宝 City Go", 
-        tag: "新国标",
-        category: 'new-national-standard',
-        images: {
-            main: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=2670&auto=format&fit=crop",
-            side: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=2670&auto=format&fit=crop",
-            intro: []
-        },
-        description: "符合新国标，轻便灵巧，城市穿梭利器。",
-        colors: [{name: "天蓝", hex: "#87CEEB"}, {name: "白", hex: "#FFF"}],
-        configurations: [{...mockConfigurations[0], maxSpeed: '25km/h', curbWeight: '50kg'}],
-        staticSpecs: newNationalStandardSpecs
-    },
-    { 
-        id: "lite-air",
-        name: "奔宝 Lite Air", 
-        tag: "高性价比", 
-        category: 'new-national-standard',
-        images: {
-            main: "https://images.unsplash.com/photo-1658428135894-39f1c7d6d528?q=80&w=2574&auto=format&fit=crop",
-            side: "https://images.unsplash.com/photo-1658428135894-39f1c7d6d528?q=80&w=2574&auto=format&fit=crop",
-            intro: []
-        },
-        description: "极简设计，超高性价比，入门首选。",
-        colors: [{name: "银", hex: "#C0C0C0"}, {name: "黑", hex: "#000"}],
-        configurations: [{...mockConfigurations[0], maxSpeed: '25km/h', curbWeight: '52kg'}],
-        staticSpecs: newNationalStandardSpecs
-    },
-    { 
-        id: "mini-z",
-        name: "奔宝 Mini Z", 
-        tag: "可进电梯",
-        category: 'new-national-standard',
-        images: {
-            main: "https://images.unsplash.com/photo-1532187643605-4e7804d1fce8?q=80&w=2574&auto=format&fit=crop",
-            side: "https://images.unsplash.com/photo-1532187643605-4e7804d1fce8?q=80&w=2574&auto=format&fit=crop",
-            intro: []
-        },
-        description: "小巧玲珑，可轻松进入电梯，解决充电难题。",
-        colors: [{name: "橙", hex: "#FFA500"}, {name: "白", hex: "#FFF"}],
-        configurations: [{...mockConfigurations[0], maxSpeed: '25km/h', curbWeight: '48kg'}],
-        staticSpecs: newNationalStandardSpecs
-    },
-    { 
-        id: "foldable",
-        name: "奔宝 Foldable", 
-        tag: "折叠便携",
-        category: 'new-national-standard',
-        images: {
-            main: "https://images.unsplash.com/photo-1517407137812-78d104595bd4?q=80&w=2574&auto=format&fit=crop",
-            side: "https://images.unsplash.com/photo-1517407137812-78d104595bd4?q=80&w=2574&auto=format&fit=crop",
-            intro: []
-        },
-        description: "一键折叠，轻松放入汽车后备箱。",
-        colors: [{name: "黑", hex: "#000"}, {name: "白", hex: "#FFF"}],
-        configurations: [{...mockConfigurations[0], maxSpeed: '25km/h', curbWeight: '45kg'}],
-        staticSpecs: newNationalStandardSpecs
-    },
-    { 
-        id: "trike-pro",
-        name: "奔宝 Trike Pro", 
-        tag: "载货王",
-        category: 'tricycle',
-        images: {
-            main: "https://images.unsplash.com/photo-1622353381666-3d207f20257e?q=80&w=2670&auto=format&fit=crop",
-            side: "https://images.unsplash.com/photo-1622353381666-3d207f20257e?q=80&w=2670&auto=format&fit=crop", // placeholder
-            intro: []
-        },
-        description: "超强载重，坚固耐用，您的致富好帮手。",
-        colors: [{name: "工程黄", hex: "#FFC107"}, {name: "红", hex: "#D32F2F"}],
-        configurations: [{...mockConfigurations[0], motor: '1500W', range: '50km'}],
-        staticSpecs: {...mockStaticSpecs, ratedLoad: '500kg', dimensions: '2500×1100×1300mm'}
-    }
-];
 
 export const translations: Record<'zh' | 'en', Translation> = {
     zh: {
@@ -381,7 +205,7 @@ export const translations: Record<'zh' | 'en', Translation> = {
             },
             items: { 
                 contactSupport: '联系客服',
-                afterSales: '售后服务',
+                afterSales: '服务政策',
                 faq: '常见问题',
                 intro: '走进奔宝', 
                 global: '全球布局',

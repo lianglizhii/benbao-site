@@ -169,8 +169,6 @@ export default config({
                     }),
                     { label: '车身颜色' }
                 ),
-                // 3D模型链接
-                model3d: fields.text({ label: '3D模型 URL (.glb)', description: '可选' }),
 
                 // 静态参数 (Static Specs)
                 staticSpecs: fields.object({
