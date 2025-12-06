@@ -5,17 +5,15 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X, Globe, ChevronDown, MapPin } from 'lucide-react';
-import { translations } from '@/constants'; // 1. 移除了 allModels
+import { translations } from '@/constants';
 import Logo from './Logo';
-import { MainCategory, CarModel } from '@/types'; // 2. 引入 CarModel 类型
+import { MainCategory, CarModel } from '@/types';
 import { useLanguage } from '@/context/LanguageContext';
 
-// 3. 定义 Props
 interface NavbarProps {
     allModels: CarModel[];
 }
 
-// 4. 接收 props (给默认值 [] 防止报错)
 const Navbar: React.FC<NavbarProps> = ({ allModels = [] }) => {
     const { lang, toggleLang } = useLanguage();
 
@@ -36,7 +34,6 @@ const Navbar: React.FC<NavbarProps> = ({ allModels = [] }) => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Close mobile menu on route change
     useEffect(() => {
         setIsMenuOpen(false);
         setMobileExpandedItem(null);
@@ -63,19 +60,7 @@ const Navbar: React.FC<NavbarProps> = ({ allModels = [] }) => {
             path: '/tech',
             type: 'link'
         },
-        {
-            id: 'service',
-            title: t.nav.service,
-            path: '/service',
-            type: 'dropdown',
-            image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=2669&auto=format&fit=crop",
-            items: [
-                { name: t.nav.items.contactSupport, path: '/contact#contact' },
-                { name: t.nav.items.social, path: '/contact#social' },
-                { name: t.nav.items.afterSales, path: '/service?tab=policy' },
-                { name: t.nav.items.faq, path: '/service?tab=faq' }
-            ]
-        },
+        // 👇👇👇 调整顺序：About 现在排在 Service 前面
         {
             id: 'about',
             title: t.nav.about,
@@ -102,10 +87,24 @@ const Navbar: React.FC<NavbarProps> = ({ allModels = [] }) => {
                 {
                     title: t.nav.aboutGroups.business,
                     items: [
-                        { name: t.nav.items.partners, path: '/business#partners' },
-                        { name: t.nav.items.franchise, path: '/business#franchise' }
+                        { name: t.nav.items.franchise, path: '/business#franchise' },
+                        { name: t.nav.items.partners, path: '/business#partners' }
                     ]
                 }
+            ]
+        },
+        // 👇👇👇 Service 现在排在后面
+        {
+            id: 'service',
+            title: t.nav.service,
+            path: '/service',
+            type: 'dropdown',
+            image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=2669&auto=format&fit=crop",
+            items: [
+                { name: t.nav.items.contactSupport, path: '/contact#contact' },
+                { name: t.nav.items.social, path: '/contact#social' },
+                { name: t.nav.items.faq, path: '/service?tab=faq' },
+                { name: t.nav.items.afterSales, path: '/service?tab=policy' }
             ]
         }
     ];
@@ -116,9 +115,7 @@ const Navbar: React.FC<NavbarProps> = ({ allModels = [] }) => {
         { id: 'tricycle', label: '三轮车' }
     ];
 
-    // Helper to filter models for mega menu preview
     const getPreviewModels = (cat: MainCategory) => {
-        // 5. 使用 props 传入的 allModels
         return allModels.filter(m => m.category === cat).slice(0, 5);
     };
 
@@ -131,7 +128,7 @@ const Navbar: React.FC<NavbarProps> = ({ allModels = [] }) => {
     return (
         <>
             <nav
-                className={`fixed w-full z-50 transition-all duration-300 ${isDarkText ? 'bg-white shadow-sm py-3' : 'bg-transparent py-5'}`}
+                className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 transform-none ${isDarkText ? 'bg-white shadow-sm py-3' : 'bg-transparent py-5'}`}
                 onMouseEnter={() => setIsNavHovered(true)}
                 onMouseLeave={() => { setIsNavHovered(false); setHoveredNav(null); }}
             >

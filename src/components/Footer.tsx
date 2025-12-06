@@ -74,8 +74,8 @@ const Footer: React.FC = () => {
                     <div className="col-span-1">
                         <h4 className="font-bold text-gray-900 mb-6">{lang === 'zh' ? '商务合作' : 'Business'}</h4>
                         <ul className="space-y-4 text-sm text-gray-500">
-                            <li><Link href="/business#partners" className="hover:text-pink-600 transition-colors">{lang === 'zh' ? '合作伙伴' : 'Partners'}</Link></li>
                             <li><Link href="/business#franchise" className="hover:text-pink-600 transition-colors">{lang === 'zh' ? '经销商加盟' : 'Franchise'}</Link></li>
+                            <li><Link href="/business#partners" className="hover:text-pink-600 transition-colors">{lang === 'zh' ? '合作伙伴' : 'Partners'}</Link></li>
                             <li><Link href="/news" className="hover:text-pink-600 transition-colors">{lang === 'zh' ? '新闻资讯' : 'News'}</Link></li>
                         </ul>
                     </div>
@@ -89,11 +89,11 @@ const Footer: React.FC = () => {
                             {/* 👇 2. 新增：社媒账号 -> /contact#social */}
                             <li><Link href="/contact#social" className="hover:text-pink-600 transition-colors">{lang === 'zh' ? '社媒账号' : 'Social Media'}</Link></li>
 
-                            {/* 👇 3. 售后政策 */}
-                            <li><Link href="/service?tab=policy" className="hover:text-pink-600 transition-colors">{lang === 'zh' ? '售后政策' : 'After Sales'}</Link></li>
+                            {/* 👇 3. 常见问题 */}
+                            <li><Link href="/service?tab=faq" className="hover:text-pink-600 transition-colors">{lang === 'zh' ? '常见问题' : 'FAQ'}</Link></li>
 
                             {/* 👇 4. 常见问题 */}
-                            <li><Link href="/service?tab=faq" className="hover:text-pink-600 transition-colors">{lang === 'zh' ? '常见问题' : 'FAQ'}</Link></li>
+                            <li><Link href="/service?tab=policy" className="hover:text-pink-600 transition-colors">{lang === 'zh' ? '服务政策' : 'After Sales'}</Link></li>
                         </ul>
                     </div>
 
